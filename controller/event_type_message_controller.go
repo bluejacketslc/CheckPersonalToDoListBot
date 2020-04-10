@@ -6,10 +6,11 @@ import (
 )
 
 var commands = map[string] handler.BaseHandler {
-	"/subscribe": handler.SubscribeController{},
-	"/add":       handler.AddToDoListController{},
-	"/list":      handler.ShowToDoListController{},
-	"/remove":    handler.DeleteToDoListController{},
+	"/subscribe": handler.SubscribeHandler{},
+	"/unsubscribe": handler.UnsubscribeHandler{},
+	"/add":       handler.AddToDoListHandler{},
+	"/list":      handler.ShowToDoListHandler{},
+	"/remove":    handler.DeleteToDoListHandler{},
 	"/help": handler.HelpToDoListHandler{},
 }
 

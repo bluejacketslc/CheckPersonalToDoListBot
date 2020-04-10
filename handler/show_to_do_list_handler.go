@@ -5,9 +5,9 @@ import (
 	"log"
 )
 
-type ShowToDoListController struct {}
+type ShowToDoListHandler struct {}
 
-func(controller ShowToDoListController) Handle(bot *linebot.Client, event *linebot.Event) {
+func(handler ShowToDoListHandler) Handle(bot *linebot.Client, event *linebot.Event) {
 	_, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("Show")).Do()
 	if err != nil {
 		log.Fatal(err.Error())

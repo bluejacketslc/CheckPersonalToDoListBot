@@ -7,7 +7,7 @@ import (
 
 type HelpToDoListHandler struct {}
 
-func (controller HelpToDoListHandler) Handle(bot *linebot.Client, event *linebot.Event) {
+func (handler HelpToDoListHandler) Handle(bot *linebot.Client, event *linebot.Event) {
 	_, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("Help")).Do()
 	if err != nil {
 		log.Fatal(err.Error())
