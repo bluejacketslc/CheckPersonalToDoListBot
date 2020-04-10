@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"to-do-list-linebot/constants"
+	"todoreminder/constants"
 )
 
 func loadEnv() {

@@ -2,7 +2,7 @@ package constants
 
 import (
 	"github.com/line/line-bot-sdk-go/linebot"
-	"to-do-list-linebot/controller"
+	"todoreminder/controller"
 )
 
 var EventListeners = map[linebot.EventType]interface{}{
