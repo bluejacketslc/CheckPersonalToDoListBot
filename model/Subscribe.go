@@ -1,7 +1,9 @@
 package model
 
+import "time"
+
 type Subscribe struct {
 	Id string
 	Name string
-	DeletedAt string
+	DeletedAt *time.Time
 }

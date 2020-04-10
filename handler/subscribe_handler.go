@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
+	"time"
 	"todoreminder/helpers"
 	"todoreminder/model"
 )
@@ -19,14 +20,14 @@ func (handler SubscribeHandler) Handle(bot *linebot.Client, event *linebot.Event
 	}
 	currentSubscriber := handler.find(dbConnection, userId)
 	if currentSubscriber != nil {
-		currentSubscriber.DeletedAt = ""
+		currentSubscriber.DeletedAt = nil
 
 		handler.update(dbConnection, *currentSubscriber)
 	} else {
 		newSubscriber := model.Subscribe{
 			Id:        userId,
 			Name:      userName.DisplayName,
-			DeletedAt: "",
+			DeletedAt: nil,
 		}
 
 		handler.create(dbConnection, newSubscriber)
@@ -50,8 +51,10 @@ func (handler SubscribeHandler) find(dbConnection *sql.DB, userId string) *model
 	}
 	results, err := currentStatement.Query(userId)
 	if results.Next() {
-		var name, deletedAt string
-		err = results.Scan(&name, &deletedAt)
+		var id string
+		var name string
+		var deletedAt *time.Time
+		err = results.Scan(&id, &name, &deletedAt)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
