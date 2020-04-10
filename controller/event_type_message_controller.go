@@ -7,6 +7,6 @@ import (
 
 type EventTypeMessageController struct {}
 
-func (controller *EventTypeMessageController) Execute(event *linebot.Event) {
+func (controller *EventTypeMessageController) Execute(bot *linebot.Client, event *linebot.Event) {
 	fmt.Println("EventTypeMessage")
 }
