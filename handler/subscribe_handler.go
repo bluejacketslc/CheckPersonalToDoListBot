@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
-	"time"
 	"todoreminder/helpers"
 	"todoreminder/model"
 )
@@ -20,14 +19,14 @@ func (handler SubscribeHandler) Handle(bot *linebot.Client, event *linebot.Event
 	}
 	currentSubscriber := handler.find(dbConnection, userId)
 	if currentSubscriber != nil {
-		currentSubscriber.DeletedAt = nil
+		currentSubscriber.DeletedAt = ""
 
 		handler.update(dbConnection, *currentSubscriber)
 	} else {
 		newSubscriber := model.Subscribe{
 			Id:        userId,
 			Name:      userName.DisplayName,
-			DeletedAt: nil,
+			DeletedAt: "",
 		}
 
 		handler.create(dbConnection, newSubscriber)
@@ -53,7 +52,7 @@ func (handler SubscribeHandler) find(dbConnection *sql.DB, userId string) *model
 	if results.Next() {
 		var id string
 		var name string
-		var deletedAt *time.Time
+		var deletedAt string
 		err = results.Scan(&id, &name, &deletedAt)
 		if err != nil {
 			log.Fatal(err.Error())
@@ -81,12 +80,12 @@ func (handler SubscribeHandler) update(dbConnection *sql.DB, s model.Subscribe) 
 }
 
 func (handler SubscribeHandler) create(dbConnection *sql.DB, s model.Subscribe) {
-	query := "INSERT INTO subscribers (id, name) VALUES (?, ?)"
+	query := "INSERT INTO subscribers (id, name, deleted_at) VALUES (?, ?, ?)"
 	currentStatement, err := dbConnection.Prepare(query)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	_, err = currentStatement.Exec(s.Id, s.Name)
+	_, err = currentStatement.Exec(s.Id, s.Name, s.DeletedAt)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
