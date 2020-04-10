@@ -6,8 +6,13 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"todoreminder/constants"
+	"todoreminder/controller"
 )
+
+var EventListeners = map[linebot.EventType] controller.BaseController {
+	linebot.EventTypeMessage: controller.EventTypeMessageController{},
+	linebot.EventTypeFollow: controller.EventTypeFollowController{},
+}
 
 func loadEnv() {
 	err := godotenv.Load()
@@ -32,7 +37,7 @@ func setListeners(bot *linebot.Client, r *http.Request) {
 	}
 
 	for _, event := range events {
-		constants.EventListeners[event.Type].Execute(bot, event)
+		EventListeners[event.Type].Execute(bot, event)
 	}
 }
 
