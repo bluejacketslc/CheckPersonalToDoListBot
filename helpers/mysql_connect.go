@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"os"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func CreateConnection() *sql.DB {
