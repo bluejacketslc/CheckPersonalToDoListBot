@@ -32,7 +32,7 @@ func setListeners(bot *linebot.Client, r *http.Request) {
 	}
 
 	for _, event := range events {
-		constants.EventListeners[event.Type].(func())()
+		constants.EventListeners[event.Type].(func(e *linebot.Event))(event)
 	}
 }
 
