@@ -16,7 +16,7 @@ func(handler UnsubscribeHandler) Handle(bot *linebot.Client, event *linebot.Even
 	userId := event.Source.UserID
 
 	currentSubscriber := handler.find(dbConnection, userId)
-	if currentSubscriber != nil {
+	if currentSubscriber != nil || currentSubscriber.DeletedAt == "" {
 		currentSubscriber.DeletedAt = time.Now().Format("01-02-2003 04:05:06")
 
 		handler.update(dbConnection, *currentSubscriber)
@@ -46,8 +46,9 @@ func (handler UnsubscribeHandler) find(dbConnection *sql.DB, userId string) *mod
 	}
 	results, err := currentStatement.Query(userId)
 	if results.Next() {
+		var id string
 		var name, deletedAt string
-		err = results.Scan(&name, &deletedAt)
+		err = results.Scan(&id, &name, &deletedAt)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
