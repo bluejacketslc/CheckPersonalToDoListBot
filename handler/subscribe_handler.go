@@ -78,7 +78,7 @@ func (handler SubscribeHandler) update(dbConnection *sql.DB, s model.Subscribe) 
 }
 
 func (handler SubscribeHandler) create(dbConnection *sql.DB, s model.Subscribe) {
-	query := "INSERT INTO subscribers (id, name) VALUES ($1, $2)"
+	query := "INSERT INTO subscribers (id, name) VALUES (?, ?)"
 	currentStatement, err := dbConnection.Prepare(query)
 	if err != nil {
 		log.Fatal(err.Error())
