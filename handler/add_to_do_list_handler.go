@@ -19,7 +19,7 @@ func(handler AddToDoListHandler) Handle(bot *linebot.Client, event *linebot.Even
 	generatedId := uuid.New().String()[:8]
 	userId := event.Source.UserID
 	name, rawDeadline := handler.fetchData(event)
-	deadline, err := time.Parse("020106", rawDeadline)
+	deadline, err := time.Parse("2006-01-02", rawDeadline)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
