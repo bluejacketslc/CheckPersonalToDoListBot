@@ -12,13 +12,19 @@ import (
 	"todoreminder/model"
 )
 
+var (
+	addHelpInstructions =
+		"Command Usage:\n" +
+		"/add [deadline in yyyy-mm-dd] [task name]"
+)
+
 type AddToDoListHandler struct {}
 
 func(handler AddToDoListHandler) Handle(bot *linebot.Client, event *linebot.Event) {
 	dbConnection := helpers.CreateConnection()
 	generatedId := uuid.New().String()[:8]
 	userId := event.Source.UserID
-	name, rawDeadline := handler.fetchData(event)
+	name, rawDeadline := handler.fetchData(bot, event)
 	deadline, err := time.Parse("2006-01-02", rawDeadline)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -36,21 +42,29 @@ func(handler AddToDoListHandler) Handle(bot *linebot.Client, event *linebot.Even
 	})
 
 	_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("New To Do List has been added with following details:\n" +
-		"Task Name: " + name + "\nDeadline:" + deadline.Format("02 January 2006"))).Do()
+		"Task Name: " + name + "\nDeadline: " + deadline.Format("02 January 2006"))).Do()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 }
 
-func(handler AddToDoListHandler) fetchData(event *linebot.Event) (string, string) {
+func(handler AddToDoListHandler) fetchData(bot *linebot.Client, event *linebot.Event) (string, string) {
 	// format: /add [deadline] [name]
 	var name, deadline string
 	switch message := event.Message.(type){
 	case *linebot.TextMessage:
 		currentMessage := message.Text
 		arrSplitString := strings.SplitN(currentMessage, " ", 3)
-		deadline = arrSplitString[1]
-		name = arrSplitString[2]
+		if len(arrSplitString) != 3 {
+			_, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(addHelpInstructions)).Do()
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+			log.Fatal("Not Enough Arguments")
+		} else {
+			deadline = arrSplitString[1]
+			name = arrSplitString[2]
+		}
 	}
 
 	return name, deadline
