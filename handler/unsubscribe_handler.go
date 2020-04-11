@@ -19,6 +19,7 @@ func(handler UnsubscribeHandler) Handle(bot *linebot.Client, event *linebot.Even
 	currentSubscriber := handler.find(dbConnection, userId)
 	if currentSubscriber != nil || currentSubscriber.DeletedAt.Valid == false {
 		currentSubscriber.DeletedAt.Time = time.Now()
+		currentSubscriber.DeletedAt.Valid = true
 
 		handler.update(dbConnection, *currentSubscriber)
 		_, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have set daily to-do-list reminder to off. Reminder will not be shown. Enter \"/subscribe\" to activate reminder again.")).Do()
