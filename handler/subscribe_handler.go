@@ -47,7 +47,7 @@ func (handler SubscribeHandler) Handle(bot *linebot.Client, event *linebot.Event
 		}
 
 		handler.update(dbConnection, *currentSubscriber)
-		_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have set daily to-do-list reminder on. Reminder will send message every 07.00 GMT +7")).Do()
+		_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have set daily to-do-list reminder on againg. Reminder will send message every 07.00 GMT +7")).Do()
 		if err != nil {
 			log.Fatal(err.Error())
 		}
