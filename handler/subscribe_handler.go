@@ -36,7 +36,7 @@ func (handler SubscribeHandler) Handle(bot *linebot.Client, event *linebot.Event
 			log.Fatal(err.Error())
 		}
 	} else if currentSubscriber.DeletedAt.Valid {
-		_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have turn on to-do-list reminder.")).Do()
+		_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You had turn on to-do-list reminder.")).Do()
 		if err != nil {
 			log.Fatal(err.Error())
 		}
