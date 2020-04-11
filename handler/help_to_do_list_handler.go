@@ -19,7 +19,7 @@ var (
 		"/remove [To Do ID] -> Remove To Do List based on ID\n" +
 		"/help -> Show Usage of Commands\n" +
 		"\n" +
-		"If you want to add any ideas to this code, please contact me.\n" +
+		"If you want to add any ideas to this bot, please contact me.\n" +
 		"Developer Email: christopherlimawan@gmail.com\n" +
 		"Hardwork and Extraordinary Effort Makes Success Comes Closer ~ Bluejack 18-1"
 )
