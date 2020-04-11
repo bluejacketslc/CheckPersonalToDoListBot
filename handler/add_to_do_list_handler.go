@@ -30,7 +30,7 @@ func(handler AddToDoListHandler) Handle(bot *linebot.Client, event *linebot.Even
 		Name:      name,
 		Deadline:  mysql.NullTime{
 			Time:  deadline,
-			Valid: false,
+			Valid: true,
 		},
 		DeletedAt: mysql.NullTime{},
 	})
