@@ -36,7 +36,7 @@ func(handler AddToDoListHandler) Handle(bot *linebot.Client, event *linebot.Even
 	})
 
 	_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("New To Do List has been added with following details:\n" +
-		"Task Name: " + name + "\nDeadline:" + deadline.String())).Do()
+		"Task Name: " + name + "\nDeadline:" + deadline.Format("02 January 2006"))).Do()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
