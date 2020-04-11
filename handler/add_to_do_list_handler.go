@@ -48,7 +48,7 @@ func(handler AddToDoListHandler) fetchData(event *linebot.Event) (string, string
 	switch message := event.Message.(type){
 	case *linebot.TextMessage:
 		currentMessage := message.Text
-		arrSplitString := strings.SplitN(currentMessage, " ", 2)
+		arrSplitString := strings.SplitN(currentMessage, " ", 3)
 		deadline = arrSplitString[1]
 		name = arrSplitString[2]
 	}
