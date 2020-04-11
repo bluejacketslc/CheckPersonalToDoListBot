@@ -54,10 +54,10 @@ func(handler DeleteToDoListHandler) fetchData(bot *linebot.Client, event *linebo
 			}
 			log.Fatal("Not Enough Arguments")
 		}
-
 		toDoId = arrSplitString[1]
-		return toDoId
 	}
+
+	return toDoId
 }
 
 func(handler DeleteToDoListHandler) delete(dbConnection *sql.DB, t *model.ToDo) {
