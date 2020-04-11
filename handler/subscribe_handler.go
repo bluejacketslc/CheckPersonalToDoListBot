@@ -5,7 +5,6 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
-	"time"
 	"todoreminder/helpers"
 	"todoreminder/model"
 )
@@ -24,10 +23,7 @@ func (handler SubscribeHandler) Handle(bot *linebot.Client, event *linebot.Event
 		newSubscriber := model.Subscribe{
 			Id:        userId,
 			Name:      userName.DisplayName,
-			DeletedAt: mysql.NullTime{
-				Time:  time.Time{},
-				Valid: false,
-			},
+			DeletedAt: mysql.NullTime{},
 		}
 
 		handler.create(dbConnection, newSubscriber)
@@ -41,10 +37,7 @@ func (handler SubscribeHandler) Handle(bot *linebot.Client, event *linebot.Event
 			log.Fatal(err.Error())
 		}
 	} else {
-		currentSubscriber.DeletedAt = mysql.NullTime{
-			Time:  time.Time{},
-			Valid: false,
-		}
+		currentSubscriber.DeletedAt = mysql.NullTime{}
 
 		handler.update(dbConnection, *currentSubscriber)
 		_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have set daily to-do-list reminder on again. Reminder will send message every 07.00 GMT +7")).Do()
