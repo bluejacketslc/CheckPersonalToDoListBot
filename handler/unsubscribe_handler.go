@@ -2,6 +2,7 @@ package handler
 
 import (
 	"database/sql"
+	"github.com/go-sql-driver/mysql"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
 	"time"
@@ -16,8 +17,8 @@ func(handler UnsubscribeHandler) Handle(bot *linebot.Client, event *linebot.Even
 	userId := event.Source.UserID
 
 	currentSubscriber := handler.find(dbConnection, userId)
-	if currentSubscriber != nil || currentSubscriber.DeletedAt == "" {
-		currentSubscriber.DeletedAt = time.Now().Format("01-02-2006 15:04:05")
+	if currentSubscriber != nil || currentSubscriber.DeletedAt.Valid == false {
+		currentSubscriber.DeletedAt.Time = time.Now()
 
 		handler.update(dbConnection, *currentSubscriber)
 		_, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have set daily to-do-list reminder to off. Reminder will not be shown. Enter \"/subscribe\" to activate reminder again.")).Do()
@@ -48,7 +49,7 @@ func (handler UnsubscribeHandler) find(dbConnection *sql.DB, userId string) *mod
 	if results.Next() {
 		var id string
 		var name string
-		var deletedAt string
+		var deletedAt mysql.NullTime
 		err = results.Scan(&id, &name, &deletedAt)
 		if err != nil {
 			log.Fatal(err.Error())

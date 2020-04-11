@@ -2,8 +2,10 @@ package handler
 
 import (
 	"database/sql"
+	"github.com/go-sql-driver/mysql"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
+	"time"
 	"todoreminder/helpers"
 	"todoreminder/model"
 )
@@ -18,24 +20,39 @@ func (handler SubscribeHandler) Handle(bot *linebot.Client, event *linebot.Event
 		log.Fatal(err.Error())
 	}
 	currentSubscriber := handler.find(dbConnection, userId)
-	if currentSubscriber != nil {
-		currentSubscriber.DeletedAt = ""
-
-		handler.update(dbConnection, *currentSubscriber)
-	} else {
+	if currentSubscriber == nil {
 		newSubscriber := model.Subscribe{
 			Id:        userId,
 			Name:      userName.DisplayName,
-			DeletedAt: "",
+			DeletedAt: mysql.NullTime{
+				Time:  time.Time{},
+				Valid: false,
+			},
 		}
 
 		handler.create(dbConnection, newSubscriber)
+		_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have set daily to-do-list reminder on. Reminder will send message every 07.00 GMT +7")).Do()
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+	} else if currentSubscriber.DeletedAt.Valid {
+		_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have turn on to-do-list reminder.")).Do()
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+	} else {
+		currentSubscriber.DeletedAt = mysql.NullTime{
+			Time:  time.Time{},
+			Valid: false,
+		}
+
+		handler.update(dbConnection, *currentSubscriber)
+		_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have set daily to-do-list reminder on. Reminder will send message every 07.00 GMT +7")).Do()
+		if err != nil {
+			log.Fatal(err.Error())
+		}
 	}
 
-	_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have set daily to-do-list reminder on. Reminder will send message every 07.00 GMT +7")).Do()
-	if err != nil {
-		log.Fatal(err.Error())
-	}
 	err = dbConnection.Close()
 	if err != nil {
 		log.Fatal(err.Error())
@@ -52,7 +69,7 @@ func (handler SubscribeHandler) find(dbConnection *sql.DB, userId string) *model
 	if results.Next() {
 		var id string
 		var name string
-		var deletedAt string
+		var deletedAt mysql.NullTime
 		err = results.Scan(&id, &name, &deletedAt)
 		if err != nil {
 			log.Fatal(err.Error())
