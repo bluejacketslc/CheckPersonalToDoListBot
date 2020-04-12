@@ -12,7 +12,7 @@ import (
 type SubscribeHandler struct {}
 
 func (handler SubscribeHandler) Handle(bot *linebot.Client, event *linebot.Event) {
-	dbConnection := helpers.CreateConnection()
+	dbConnection = helpers.CreateConnection()
 	userId := event.Source.UserID
 	userName, err := bot.GetProfile(userId).Do()
 	if err != nil {

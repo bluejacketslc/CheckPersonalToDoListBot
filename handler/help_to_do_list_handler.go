@@ -14,7 +14,7 @@ var (
 		"/subscribe -> Activate Daily Reminder every 07.00 GMT +7\n" +
 		"/unsubscribe -> Deactivate Daily Reminder\n" +
 		"/add [deadline in yyyy-mm-dd] [task name] -> Add new To Do List\n" +
-		"/list -> Show 5 near deadline To Do Lists\n" +
+		"/list -> Show 8 near deadline To Do Lists\n" +
 		"/list [date in yyyy-mm-dd] -> Show all To Do Lists on that date\n" +
 		"/remove [To Do ID] -> Remove To Do List based on ID\n" +
 		"/help -> Show Usage of Commands\n" +

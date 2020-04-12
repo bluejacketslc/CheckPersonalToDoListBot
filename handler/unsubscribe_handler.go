@@ -13,7 +13,7 @@ import (
 type UnsubscribeHandler struct {}
 
 func(handler UnsubscribeHandler) Handle(bot *linebot.Client, event *linebot.Event) {
-	dbConnection := helpers.CreateConnection()
+	dbConnection = helpers.CreateConnection()
 	userId := event.Source.UserID
 
 	currentSubscriber := handler.find(dbConnection, userId)

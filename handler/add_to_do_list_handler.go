@@ -21,7 +21,7 @@ var (
 type AddToDoListHandler struct {}
 
 func(handler AddToDoListHandler) Handle(bot *linebot.Client, event *linebot.Event) {
-	dbConnection := helpers.CreateConnection()
+	dbConnection = helpers.CreateConnection()
 	generatedId := uuid.New().String()[:8]
 	userId := event.Source.UserID
 	name, rawDeadline := handler.fetchData(bot, event)
@@ -46,6 +46,8 @@ func(handler AddToDoListHandler) Handle(bot *linebot.Client, event *linebot.Even
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	dbConnection.Close()
 }
 
 func(handler AddToDoListHandler) fetchData(bot *linebot.Client, event *linebot.Event) (string, string) {

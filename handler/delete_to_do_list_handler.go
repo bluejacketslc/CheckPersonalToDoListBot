@@ -20,7 +20,7 @@ var (
 type DeleteToDoListHandler struct {}
 
 func(handler DeleteToDoListHandler) Handle(bot *linebot.Client, event *linebot.Event) {
-	dbConnection := helpers.CreateConnection()
+	dbConnection = helpers.CreateConnection()
 	userId := event.Source.UserID
 	toDoId := handler.fetchData(bot, event)
 	selectedToDo := model.ToDo{
@@ -29,7 +29,7 @@ func(handler DeleteToDoListHandler) Handle(bot *linebot.Client, event *linebot.E
 		Name:      "",
 		Deadline:  mysql.NullTime{},
 		DeletedAt: mysql.NullTime{
-			Time:  time.Now(),
+			Time:  time.Now().In(currentLocation),
 			Valid: true,
 		},
 	}
@@ -46,6 +46,11 @@ func(handler DeleteToDoListHandler) Handle(bot *linebot.Client, event *linebot.E
 		if err != nil {
 			log.Fatal(err.Error())
 		}
+	}
+
+	err := dbConnection.Close()
+	if err != nil {
+		log.Fatal(err.Error())
 	}
 }
 
