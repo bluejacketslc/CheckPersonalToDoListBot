@@ -52,6 +52,12 @@ func loadJobs(bot *linebot.Client, cronInstance *cron.Cron) {
 func main() {
 	loadEnv()
 	bot := initBot()
+
+	location, _ := time.LoadLocation("Asia/Jakarta")
+	cronInstance := cron.New(cron.WithLocation(location))
+	loadJobs(bot, cronInstance)
+	cronInstance.Start()
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		setListeners(bot, r)
 	})
@@ -60,9 +66,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-
-	location, _ := time.LoadLocation("Asia/Jakarta")
-	cronInstance := cron.New(cron.WithLocation(location))
-	loadJobs(bot, cronInstance)
-	cronInstance.Start()
 }
