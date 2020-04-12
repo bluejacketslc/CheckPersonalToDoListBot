@@ -104,15 +104,15 @@ nginx -s reload
 - [Go](https://golang.org/) - Main Language Used
 
 ### Contributing
-Please read [CONTRIBUTING.md](https://github.com/christ0208/todoreminder/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/bluejacketslc/CheckPersonalToDoListBot/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ### Versioning
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/christ0208/todoreminder/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/bluejacketslc/CheckPersonalToDoListBot/tags).
 
 ### Authors
-- Christopher Limawan - Initial Work - [Check Personal To Do List Bot](https://github.com/christ0208/todoreminder/)
+- Christopher Limawan - Initial Work - [Check Personal To Do List Bot](https://github.com/bluejacketslc/CheckPersonalToDoListBot)
 
-See also the list of [contributors](https://github.com/christ0208/todoreminder/graphs/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/bluejacketslc/CheckPersonalToDoListBot/graphs/contributors) who participated in this project.
 
 ### Acknowledgements
 - [https://www.golangprograms.com/example-of-golang-crud-using-mysql-from-scratch.html]()
