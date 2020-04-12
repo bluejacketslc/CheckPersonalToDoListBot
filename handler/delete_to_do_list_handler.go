@@ -69,7 +69,7 @@ func(handler DeleteToDoListHandler) fetchData(bot *linebot.Client, event *linebo
 }
 
 func(handler DeleteToDoListHandler) find(bot *linebot.Client, event *linebot.Event, dbConnection *sql.DB, t *model.ToDo) bool {
-	query := "SELECT * FROM todo WHERE id=? AND user_id=?"
+	query := "SELECT * FROM todo WHERE id=? AND user_id=? AND deleted_at IS NULL"
 	currentStatement, err := dbConnection.Prepare(query)
 	if err != nil {
 		log.Fatal(err.Error())
