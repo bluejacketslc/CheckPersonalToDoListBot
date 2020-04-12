@@ -21,10 +21,11 @@ type ShowToDoListHandler struct {}
 
 func(handler ShowToDoListHandler) Handle(bot *linebot.Client, event *linebot.Event) {
 	dbConnection = helpers.CreateConnection()
+	userId := event.Source.UserID
 	argumentsLength := handler.getArgumentsLength(event)
 
 	if argumentsLength == 1 {
-		collectedToDos := handler.getNearDeadlineTodo(dbConnection, event.Source.UserID)
+		collectedToDos := handler.getNearDeadlineTodo(dbConnection, userId)
 		handler.showDeadlineToDo(bot, event, collectedToDos)
 	} else if argumentsLength == 2 {
 		selectedDate := handler.fetchData(bot, event)
