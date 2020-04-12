@@ -74,7 +74,8 @@ func(job ReminderToDoListJob) sendMessage(userId string, collectionToDos []model
 	}
 
 	var currentMessage =
-		"Good Morning, " + profile.DisplayName + ". Here's your updated current Near Deadline To Do Lists:\n"
+		"Good Morning, " + profile.DisplayName + ".\n" +
+		"Here's your updated current Near Deadline To Do Lists:\n"
 	var lastMarkedDate = ""
 	for _, currentToDo := range collectionToDos {
 		currentMarkedDate := currentToDo.Deadline.Time.Format("2006-01-02")
