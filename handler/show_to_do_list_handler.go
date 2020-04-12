@@ -108,6 +108,14 @@ func(handler ShowToDoListHandler) getSelectedDeadlineToDo(dbConnection *sql.DB, 
 }
 
 func(handler ShowToDoListHandler) showDeadlineToDo(bot *linebot.Client, event *linebot.Event, collectedToDos []model.ToDo) {
+	if len(collectedToDos) == 0 {
+		_, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You don't have any To Do List in the future. Add your To Do List Now, using \"/add\" command!")).Do()
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		return
+	}
+
 	var currentMessage =
 		"Current Near Deadline To Do Lists:\n"
 	var lastMarkedDate = ""

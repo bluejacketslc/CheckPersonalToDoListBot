@@ -3,10 +3,13 @@ package main
 import (
 	"github.com/joho/godotenv"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"github.com/robfig/cron"
 	"log"
 	"net/http"
 	"os"
+	"time"
 	"todoreminder/controller"
+	"todoreminder/job"
 )
 
 var EventListeners = map[linebot.EventType] controller.BaseController {
@@ -41,6 +44,11 @@ func setListeners(bot *linebot.Client, r *http.Request) {
 	}
 }
 
+func loadJobs(bot *linebot.Client, cronInstance *cron.Cron) {
+	job.Bot = bot
+	cronInstance.AddFunc("CRON_TZ=Asia/Jakarta 0 7 * * *", job.ReminderToDoListJob{}.Execute)
+}
+
 func main() {
 	loadEnv()
 	bot := initBot()
@@ -52,4 +60,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	location, _ := time.LoadLocation("Asia/Jakarta")
+	cronInstance := cron.New(cron.WithLocation(location))
+	loadJobs(bot, cronInstance)
+	cronInstance.Start()
 }
