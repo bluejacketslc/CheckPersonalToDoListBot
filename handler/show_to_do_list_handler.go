@@ -65,7 +65,7 @@ func(handler ShowToDoListHandler) getNearDeadlineTodo(dbConnection *sql.DB, user
 	}
 
 	currentDate := time.Now().In(currentLocation)
-	results, err := currentStatement.Query(userId, currentDate.Format("2020-01-02"))
+	results, err := currentStatement.Query(userId, currentDate.Format("2006-01-02"))
 
 	defer results.Close()
 	for results.Next() {
@@ -89,11 +89,11 @@ func(handler ShowToDoListHandler) getSelectedDeadlineToDo(dbConnection *sql.DB, 
 	}
 
 	// malicious date format will not be processed
-	currentTime, err := time.Parse("2020-01-02", selectedDate)
+	currentTime, err := time.Parse("2006-01-02", selectedDate)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	results, err := currentStatement.Query(userId, currentTime.Format("2020-01-02"))
+	results, err := currentStatement.Query(userId, currentTime.Format("2006-01-02"))
 	defer results.Close()
 	for results.Next() {
 		currentToDo := model.ToDo{}
@@ -112,7 +112,7 @@ func(handler ShowToDoListHandler) showDeadlineToDo(bot *linebot.Client, event *l
 		"Current Near Deadline To Do Lists:\n"
 	var lastMarkedDate = ""
 	for _, currentToDo := range collectedToDos {
-		currentMarkedDate := currentToDo.Deadline.Time.Format("2020-01-02")
+		currentMarkedDate := currentToDo.Deadline.Time.Format("2006-01-02")
 		if currentMarkedDate != lastMarkedDate {
 			if lastMarkedDate != "" {
 				currentMessage += "\n"
