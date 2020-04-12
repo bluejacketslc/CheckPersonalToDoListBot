@@ -34,18 +34,18 @@ func(handler DeleteToDoListHandler) Handle(bot *linebot.Client, event *linebot.E
 		},
 	}
 
-	if handler.find(bot, event, dbConnection, &selectedToDo) {
-		handler.delete(bot, event, dbConnection, &selectedToDo)
+	if handler.find(dbConnection, &selectedToDo) {
+		handler.delete(dbConnection, &selectedToDo)
+
+		_, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have success delete a to do.")).Do()
+		if err != nil {
+			log.Fatal(err.Error())
+		}
 	} else {
 		_, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("Your To Do List you want to delete is not found.")).Do()
 		if err != nil {
 			log.Fatal(err.Error())
 		}
-	}
-
-	_, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("You have success delete a to do.")).Do()
-	if err != nil {
-		log.Fatal(err.Error())
 	}
 }
 
@@ -68,7 +68,7 @@ func(handler DeleteToDoListHandler) fetchData(bot *linebot.Client, event *linebo
 	return toDoId
 }
 
-func(handler DeleteToDoListHandler) find(bot *linebot.Client, event *linebot.Event, dbConnection *sql.DB, t *model.ToDo) bool {
+func(handler DeleteToDoListHandler) find(dbConnection *sql.DB, t *model.ToDo) bool {
 	query := "SELECT * FROM todo WHERE id=? AND user_id=? AND deleted_at IS NULL"
 	currentStatement, err := dbConnection.Prepare(query)
 	if err != nil {
@@ -86,7 +86,7 @@ func(handler DeleteToDoListHandler) find(bot *linebot.Client, event *linebot.Eve
 	return false
 }
 
-func(handler DeleteToDoListHandler) delete(bot *linebot.Client, event *linebot.Event, dbConnection *sql.DB, t *model.ToDo) {
+func(handler DeleteToDoListHandler) delete(dbConnection *sql.DB, t *model.ToDo) {
 	query := "UPDATE todo SET deleted_at=? WHERE id=? AND user_id=?"
 	currentStatement, err := dbConnection.Prepare(query)
 	if err != nil {
