@@ -8,8 +8,8 @@ import (
 
 var (
 	welcomingMessage =
-		"Check To Do List Bot\n" +
-		"====================\n" +
+		"Check Personal To Do List Bot\n" +
+		"=====================\n" +
 		"Created by CP18-1\n" +
 		"\n" +
 		"Hi, %s.\n" +
